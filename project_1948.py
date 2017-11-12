@@ -134,21 +134,23 @@ def count_keywords_and_phrases(list_of_interviews):
         reader = csv.reader(f)
         for row in reader:
             keywords_and_phrases.append(row[0])
-    keywords_and_phrases_occurences = []
+    #keywords are already stored in a csv
     percentage_used = [] 
     for word in keywords_and_phrases:
         sum_used = 0
-        sum_not_used = 0
         for interview in list_of_interviews:
             if ((word in interview) or (word.lower() in interview)):
                 sum_used += 1
-            else:
-                sum_not_used += 1
         percentage = (sum_used/len(list_of_interviews)) * 100
+        #this will tell us how many interviews this particular word was used in
         percentage_used.append(percentage)
-        
+        #each word will have a corresponding percentage so word_0 has a
+        #percentage of percentage_0
     quicksort(percentage_used, keywords_and_phrases, 0,
               len(percentage_used) - 1)
+    #sort so it will be easier to see what words are used most frequently
+    #as the percentages are sorted so is the array of words so each words
+    #percentage is still easy to find
     word_and_percentage_used = open("word_and_percentage_used.csv", "w")
     word_and_percentage_used.write("Keyword,Percentage\n")
     for i in range(len(percentage_used) - 1, 0, -1):
@@ -159,6 +161,8 @@ def count_keywords_and_phrases(list_of_interviews):
     print(keywords_and_phrases_occurences)
     print("finished")
     
+#Standard quicksort algorithm just had to tweak so it will sort two arrays
+#at a time
 def quicksort(list, list_2, min, max):
     if (min < max):
         p = partition(list, list_2, min, max)
