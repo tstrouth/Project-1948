@@ -157,8 +157,6 @@ def count_keywords_and_phrases(list_of_interviews):
         word_and_percentage_used.write(keywords_and_phrases[i] + ',' +
                                     str(percentage_used[i]) + '\n')
     word_and_percentage_used.close()
-
-    print(keywords_and_phrases_occurences)
     print("finished")
     
 #Standard quicksort algorithm just had to tweak so it will sort two arrays
