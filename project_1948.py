@@ -2,7 +2,8 @@ import re
 # import string
 from docx import Document
 import csv
-
+import mmap
+import re
 #Prepare function to read in documents
 def read_doc_file_to_string(file_name, read_mode):
     f = open(file_name, read_mode)
@@ -153,10 +154,34 @@ def count_keywords_and_phrases(list_of_interviews):
     #percentage is still easy to find
     word_and_percentage_used = open("word_and_percentage_used.csv", "w")
     word_and_percentage_used.write("Keyword,Percentage\n")
+    
     for i in range(len(percentage_used) - 1, 0, -1):
         word_and_percentage_used.write(keywords_and_phrases[i] + ',' +
                                     str(percentage_used[i]) + '\n')
     word_and_percentage_used.close()
+    print("finished")
+
+def count_words(list_of_interviews):
+    keywords_and_phrases = []
+    with open('Keywords_And_Phrases.csv', 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            keywords_and_phrases.append(row[0])
+    frequency = []
+    for i in range(len(keywords_and_phrases)):
+        frequency.append(0)
+    for interview in list_of_interviews:
+        for i in range(len(keywords_and_phrases)):
+            frequency[i] += interview.count(keywords_and_phrases[i])
+            frequency[i] += interview.count(keywords_and_phrases[i].lower())
+    
+    quicksort(frequency, keywords_and_phrases, 0, len(frequency) - 1)
+    word_and_freq = open("word_and_frequency.csv", "w")
+    word_and_freq.write("keyword,frequency\n")
+    for i in range(len(frequency) - 1, 0, -1):
+        word_and_freq.write(keywords_and_phrases[i]
+                            + ',' + str(frequency[i]) + '\n')
+    word_and_freq.close()
     print("finished")
     
 #Standard quicksort algorithm just had to tweak so it will sort two arrays

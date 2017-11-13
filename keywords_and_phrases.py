@@ -1,5 +1,5 @@
 from PyDictionary import PyDictionary
-
+import mmap
 dictionary = PyDictionary()
 
 keywords_and_phrases = ["Guidance", "Not Caring", "Safe", "Inspired",
@@ -35,21 +35,29 @@ keywords_and_phrases = ["Guidance", "Not Caring", "Safe", "Inspired",
                             "Mosque", "War-Torn", "Past", "Present", "Future",
                             "Hope", "Religion", "Religious Symbol", "Absence",
                             "Gender Inequality", "Careers", "Nepotism" ]
-print(len(keywords_and_phrases))
+#print(len(keywords_and_phrases))
+f = open("most-frequently-used-words.txt")
+s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
 
 for i in range(len(keywords_and_phrases)):
+    print(len(keywords_and_phrases))
     new_list = []
     try:
         new_list = dictionary.synonym(keywords_and_phrases[i])
         if len(new_list) > 0:
             for j in range(len(new_list)):
                 if (new_list[j] not in keywords_and_phrases
-                    and new_list[j].title() not in keywords_and_phrases):
+                    and new_list[j].title() not in keywords_and_phrases
+                    and
+                    (s.find(bytes(new_list[j].lower(), encoding = 'utf-8'))
+                     == -1)):
                     keywords_and_phrases.append(new_list[j].title())
     except TypeError:
         pass
-
-f = open('Keywords_And_Phrases.csv', 'w')
-for i in range(len(keywords_and_phrases)):
-    f.write(keywords_and_phrases[i] + ',' + '\n')
+    
 f.close()
+
+keywords = open('Keywords_And_Phrases.csv', 'w')
+for i in range(len(keywords_and_phrases)):
+    keywords.write(keywords_and_phrases[i] + ',' + '\n')
+keywords.close()
