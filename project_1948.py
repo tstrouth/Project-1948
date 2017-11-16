@@ -179,8 +179,9 @@ def count_words(list_of_interviews):
     word_and_freq = open("word_and_frequency.csv", "w")
     word_and_freq.write("keyword,frequency\n")
     for i in range(len(frequency) - 1, 0, -1):
-        word_and_freq.write(keywords_and_phrases[i]
-                            + ',' + str(frequency[i]) + '\n')
+        if (frequency[i] != 0):
+            word_and_freq.write(keywords_and_phrases[i]
+                                + ',' + str(frequency[i]) + '\n')
     word_and_freq.close()
     print("finished")
     
